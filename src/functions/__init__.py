@@ -1,8 +1,4 @@
-__all__ = [
-    "prt",
-    "inp",
-    "clear_terminal",
-]
+__all__ = ["prt", "inp", "clear_terminal", "accumulate"]
 
 import os
 from typing import Any, Union
@@ -52,3 +48,27 @@ def clear_terminal() -> int:
     """
     logger_specials.was_called(__name__, clear_terminal.__name__)
     return os.system("cls" if os.name == "nt" else "clear")
+
+
+def accumulate(
+    start: Any = 0, end: Any = 1, x: Any = None, y: Any = None, z: Any = None
+) -> Any:
+    """
+    The function `accumulate` accumulates values based on given parameters, incrementing `x` by `y` in a loop
+    from `start` to `end`. If `z` is provided, it adds `z` to `x` as well.
+
+    @param start The `start` parameter specifies the starting value for the loop that accumulates values.
+    @param end The `end` parameter specifies the ending value for the loop that accumulates values.
+    @param x The `x` parameter represents the accumulator variable whose value is incremented.
+    @param y The `y` parameter represents the value added to `x` in each iteration of the loop.
+    @param z The `z` parameter represents an optional value added to `x` in each iteration of the loop if provided.
+
+    @return The function `accumulate` returns the accumulated value of `x`.
+    """
+    logger_specials.was_called(__name__, accumulate.__name__)
+    for i in range(start, end):  # type: ignore
+        x += y
+        if z != None:
+            x += z
+        logger_specials.adding_value_to(x, "x", y, "y")
+    return x

@@ -10,3 +10,4 @@ urllib3==2.2.0
 beaker==1.12.1
 prompt_toolkit==3.0.43
 mypy==1.9.0
+sqlalchemy==2.0.29

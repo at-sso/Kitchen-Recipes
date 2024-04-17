@@ -41,5 +41,8 @@ class __Var:
     extra_message: str = "Good looking!"
     limit: float = _random64()
 
+    def reset_extra_message(self) -> None:
+        self.extra_message = ""
 
-var = __Var
+
+var = __Var()
