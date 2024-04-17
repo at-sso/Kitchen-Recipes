@@ -51,7 +51,7 @@ class __Logger:
         # Add the handler to the logger
         self.__logger.addHandler(logger_handler)
 
-    def debug(self, message: str):
+    def debug(self, message: str) -> None:
         """
         The function `debug` logs a debug message using a logger message handler.
 

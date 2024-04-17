@@ -2,6 +2,7 @@ from .logger import *
 from .functions import *
 from .var import *
 from .db_handler import *
+from .timer import *
 
 
 def main() -> int:
@@ -24,38 +25,42 @@ def main() -> int:
 
         option: str = inp("Select an option.").lower()
 
-        match option:
-            case "1":
-                name = inp("Enter recipe name.")
-                ingredients = inp("Enter ingredients (comma separated).")
-                steps = inp("Enter steps.")
-                add_recipe(name, ingredients, steps)
-                var.extra_message = "Recipe added successfully!"
+        try:
+            match option:
+                case "1":
+                    name = inp("Enter recipe name.")
+                    ingredients = inp("Enter ingredients (comma separated).")
+                    steps = inp("Enter steps.")
+                    timer(add_recipe, name, ingredients, steps)
+                    var.extra_message = "Recipe added successfully!"
 
-            case "2":
-                recipe_id = int(inp("Enter recipe ID to update."))
-                name = inp("Enter updated recipe name.")
-                ingredients = inp("Enter updated ingredients (comma separated).")
-                steps = inp("Enter updated steps.")
-                update_recipe(recipe_id, name, ingredients, steps)
-                var.extra_message = "Recipe updated successfully!"
+                case "2":
+                    recipe_id = inp("Enter recipe ID to update.")
+                    name = inp("Enter updated recipe name.")
+                    ingredients = inp("Enter updated ingredients (comma separated).")
+                    steps = inp("Enter updated steps.")
+                    timer(update_recipe, recipe_id, name, ingredients, steps)
+                    var.extra_message = "Recipe updated successfully!"
 
-            case "3":
-                recipe_id = int(inp("Enter recipe ID to delete."))
-                delete_recipe(recipe_id)
-                var.extra_message = "Recipe deleted successfully!"
+                case "3":
+                    recipe_id = inp("Enter recipe ID to delete.")
+                    timer(delete_recipe, recipe_id)
+                    var.extra_message = "Recipe deleted successfully!"
 
-            case "4":
-                view_recipes()
-            case "5":
-                ingredient = inp("Enter ingredient to search.")
-                search_recipe_by_ingredient(ingredient)
+                case "4":
+                    timer(view_recipes)
 
-            case "6":
-                prt("Exiting...")
-                break
+                case "5":
+                    ingredient = inp("Enter ingredient to search.")
+                    timer(search_recipe_by_ingredient, ingredient)
 
-            case _:
-                var.extra_message = "Invalid option. Please choose again."
+                case "6":
+                    prt("Exiting...")
+                    break
+
+                case _:
+                    var.extra_message = "Invalid option. Please choose again."
+        except Exception:
+            return 1
 
     return 0
