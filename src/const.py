@@ -5,6 +5,8 @@ __all__ = [
     "LOGGER_PATH",
     "LOGGER_FILE",
     "SHARED_FILE",
+    "DATABASE_PATH",
+    "DATABASE_FILE",
 ]
 
 import os as os
@@ -42,8 +44,11 @@ LOGGER_FILE: str = f"{LOGGER_PATH}/{dt.now().strftime('%Y-%m-%d-%H-%M-%S')}.log"
 SHARED_FILE: str = f"{ABSOLUTE_PATH}/src/bin/random64" + (
     ".dll" if os.name == "nt" else ".so"
 )
+DATABASE_PATH: str = f"{ABSOLUTE_PATH}/database"
+DATABASE_FILE: str = f"{DATABASE_PATH}/recipes.db"
 
 __mkdirs(
     JSON_PATH,
     LOGGER_PATH,
+    DATABASE_PATH,
 )
