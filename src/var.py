@@ -44,5 +44,9 @@ class __Var:
     def reset_extra_message(self) -> None:
         self.extra_message = ""
 
+    @staticmethod
+    def get_random64() -> float:
+        return _random64()
+
 
 var = __Var()

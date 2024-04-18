@@ -11,30 +11,24 @@ __all__ = [
     "search_recipe_by_ingredient",
 ]
 
-from pymongo import database, collection, cursor
-from pymongo import MongoClient
-from typing import Any, Dict
+import redis
+from typing import Dict, Any
 
 from src.var import *
 from src.functions import *
 from src.logger import *
 
-MongoDBType = MongoClient[Any]
-DatabaseType = database.Database[Any]  # type: ignore[misc]
-CollectionType = collection.Collection[Any]  # type: ignore[misc]
-CursorType = cursor.Cursor[Any]
+RedisType = redis.Redis
 
-# Connect to MongoDB
-client: MongoDBType = MongoClient("mongodb://localhost:27017/")
-db: DatabaseType = client["recipes_db"]
-collections: CollectionType = db["recipes"]
-
-# Schema isn't necessary in MongoDB but can be helpful for consistency.
-# In this case, it's just for illustrative purposes.
-recipe_schema: Dict[str, str] = {"name": "", "ingredients": "", "steps": ""}
+# Connect to Redis
+redis_client: RedisType = redis.Redis(host="localhost", port=6379, db=0)
 
 # Log values returned by any database.
-logger_specials.values_returned(client, db, collections, recipe_schema, init=__name__)
+logger_specials.values_returned(redis_client, init=__name__)
+
+
+def __generate_recipe_id() -> str:
+    return str(var.get_random64())
 
 
 # Function to add a new recipe
@@ -46,7 +40,8 @@ def add_recipe(name: str, ingredients: str, steps: str) -> None:
     }
 
     logger_specials.value_retured("new_recipe", new_recipe, add_recipe)
-    collections.insert_one(new_recipe)
+    recipe_id: str = __generate_recipe_id()
+    redis_client.hmset(recipe_id, new_recipe)
 
 
 # Function to update an existing recipe
@@ -57,42 +52,39 @@ def update_recipe(recipe_id: str, name: str, ingredients: str, steps: str) -> No
     }
 
     logger_specials.values_returned(query, new_values, init=update_recipe)
-    collections.update_one(query, new_values)
+    redis_client.hmset(recipe_id, new_values)
 
 
 # Function to delete a recipe
 def delete_recipe(recipe_id: str) -> None:
-    query: Dict[str, str] = {"_id": recipe_id}
-
-    logger_specials.value_retured("query", query, delete_recipe)
-    collections.delete_one(query)
+    logger_specials.value_retured("recipe_id", recipe_id, delete_recipe)
+    redis_client.delete(recipe_id)
 
 
 # Function to view all recipes
 def view_recipes() -> None:
-    recipes: CursorType = collections.find()
-    logger_specials.value_retured("recipes", recipes, view_recipes)
-
+    recipe_ids: Any = redis_client.keys("*")
     var.reset_extra_message()
-    for recipe in recipes:
+    for recipe_id in recipe_ids:
+        recipe_details: Any = redis_client.hgetall(recipe_id)
         var.extra_message += accumulate(
             x="",
-            y=f"ID: {recipe['_id']}, Name: {recipe['name']}, "
-            f"Ingredients: {recipe['ingredients']}, Steps: {recipe['steps']}",
+            y=f"ID: {recipe_id.decode()}, Name: {recipe_details[b'name'].decode()}, "
+            f"Ingredients: {recipe_details[b'ingredients'].decode()}, Steps: {recipe_details[b'steps'].decode()}",
             z="\n",
         )
 
 
 # Function to search for recipes by ingredient
 def search_recipe_by_ingredient(ingredient: str) -> None:
-    recipes: CursorType = collections.find({"ingredients": {"$regex": ingredient}})
-    logger_specials.value_retured("recipes", recipes, search_recipe_by_ingredient)
-
     var.reset_extra_message()
-    for recipe in recipes:
-        var.extra_message += accumulate(
-            x="",
-            y=f"ID: {recipe['_id']}, Name: {recipe['name']}, "
-            f"Ingredients: {recipe['ingredients']}, Steps: {recipe['steps']}",
-            z="\n",
-        )
+    recipe_ids: Any = redis_client.keys("*")
+    for recipe_id in recipe_ids:
+        recipe_details: Any = redis_client.hgetall(recipe_id)
+        if ingredient in recipe_details[b"ingredients"].decode():
+            var.extra_message += accumulate(
+                x="",
+                y=f"ID: {recipe_id.decode()}, Name: {recipe_details[b'name'].decode()}, "
+                f"Ingredients: {recipe_details[b'ingredients'].decode()}, Steps: {recipe_details[b'steps'].decode()}",
+                z="\n",
+            )
