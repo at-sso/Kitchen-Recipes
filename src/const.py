@@ -7,11 +7,16 @@ __all__ = [
     "SHARED_FILE",
     "DATABASE_PATH",
     "DATABASE_FILE",
+    "TEMPLATE_PATH",
+    "TEMPLATE_FILE",
 ]
 
 import os as os
 import sys as sys
-from typing import List, Any
+from typing import (
+    List,
+    Any,
+)
 from pathlib import Path
 from datetime import datetime as dt
 
@@ -36,6 +41,7 @@ def __mkdirs(*paths: str) -> List[Any]:
     return absolute_paths
 
 
+# Paths:
 ABSOLUTE_PATH: str = os.path.abspath(os.path.dirname(sys.argv[0])).replace("\\", "/")
 JSON_PATH: str = f"{ABSOLUTE_PATH}/json"
 JSON_FILE: str = f"{JSON_PATH}/budget_data.json"
@@ -46,6 +52,9 @@ SHARED_FILE: str = f"{ABSOLUTE_PATH}/src/bin/random64" + (
 )
 DATABASE_PATH: str = f"{ABSOLUTE_PATH}/database"
 DATABASE_FILE: str = f"{DATABASE_PATH}/recipes.db"
+TEMPLATE_PATH: str = f"{ABSOLUTE_PATH}/template"
+TEMPLATE_FILE: str = f"{TEMPLATE_PATH}/index.html"
+
 
 __mkdirs(
     JSON_PATH,

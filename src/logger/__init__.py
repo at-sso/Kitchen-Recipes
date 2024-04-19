@@ -30,14 +30,19 @@ class __Logger:
         if not _os.path.exists(logger_directory):
             _os.makedirs(logger_directory)
 
-        # Delete the oldest files.
-        files: List[str] = _os.listdir(self.__log_path)
-        if not len(files) < 10:
-            logger_amount: int = max((len(files)) // 10, 1)
-            files_to_delete: List[str] = files[: len(self.__log_path) - logger_amount]
-            for file_name in files_to_delete:
-                file_path: str = _os.path.join(self.__log_path, file_name)
-                _os.remove(file_path)
+        try:
+            # Delete the oldest files.
+            files: List[str] = _os.listdir(self.__log_path)
+            if not len(files) < 10:
+                logger_amount: int = max((len(files)) // 10, 1)
+                files_to_delete: List[str] = files[
+                    : len(self.__log_path) - logger_amount
+                ]
+                for file_name in files_to_delete:
+                    file_path: str = _os.path.join(self.__log_path, file_name)
+                    _os.remove(file_path)
+        except:
+            pass
 
         # Create a file handler
         logger_handler = _logging.FileHandler(self.__log_file, mode="w")
