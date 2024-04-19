@@ -9,26 +9,16 @@ __all__ = [
     "DATABASE_FILE",
     "TEMPLATE_PATH",
     "TEMPLATE_FILE",
-    "NO_DATA_PROVIDED",
-    "NOT_FOUND",
-    "MISSING_FIELDS",
-    "SUCCESS",
 ]
 
 import os as os
 import sys as sys
-from flask import Response, jsonify
 from typing import (
     List,
     Any,
-    Tuple,
-    Dict,
 )
 from pathlib import Path
 from datetime import datetime as dt
-
-ResponseTuple = Tuple[Response, int]
-JSONType = Dict[Any, Any]
 
 
 def __mkdirs(*paths: str) -> List[Any]:
@@ -71,9 +61,3 @@ __mkdirs(
     LOGGER_PATH,
     DATABASE_PATH,
 )
-
-# Webpage responses:
-NO_DATA_PROVIDED: ResponseTuple = jsonify({"error": "No data provided."}), 400
-NOT_FOUND: ResponseTuple = jsonify({"error": "Recipe not found."}), 404
-MISSING_FIELDS: ResponseTuple = jsonify({"error": "Missing data fields."}), 400
-SUCCESS: ResponseTuple = jsonify({"message": "Recipe updated successfully."}), 200
