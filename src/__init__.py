@@ -1,7 +1,7 @@
 from .logger import *
 from .functions import *
 from .var import *
-from .db_handler import *
+from .django import *
 from .timer import *
 
 
