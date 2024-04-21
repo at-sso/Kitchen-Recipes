@@ -1,12 +1,8 @@
 __all__ = [
     "ABSOLUTE_PATH",
-    "JSON_PATH",
-    "JSON_FILE",
     "LOGGER_PATH",
     "LOGGER_FILE",
     "SHARED_FILE",
-    "DATABASE_PATH",
-    "DATABASE_FILE",
     "TEMPLATE_PATH",
     "TEMPLATE_FILE",
 ]
@@ -43,21 +39,13 @@ def __mkdirs(*paths: str) -> List[Any]:
 
 # Paths:
 ABSOLUTE_PATH: str = os.path.abspath(os.path.dirname(sys.argv[0])).replace("\\", "/")
-JSON_PATH: str = f"{ABSOLUTE_PATH}/json"
-JSON_FILE: str = f"{JSON_PATH}/budget_data.json"
 LOGGER_PATH: str = f"{ABSOLUTE_PATH}/log"
 LOGGER_FILE: str = f"{LOGGER_PATH}/{dt.now().strftime('%Y-%m-%d-%H-%M-%S')}.log"
 SHARED_FILE: str = f"{ABSOLUTE_PATH}/src/bin/random64" + (
     ".dll" if os.name == "nt" else ".so"
 )
-DATABASE_PATH: str = f"{ABSOLUTE_PATH}/database"
-DATABASE_FILE: str = f"{DATABASE_PATH}/recipes.db"
 TEMPLATE_PATH: str = f"{ABSOLUTE_PATH}/template"
 TEMPLATE_FILE: str = f"{TEMPLATE_PATH}/index.html"
 
 
-__mkdirs(
-    JSON_PATH,
-    LOGGER_PATH,
-    DATABASE_PATH,
-)
+__mkdirs(LOGGER_PATH)

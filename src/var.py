@@ -1,4 +1,4 @@
-__all__ = ["var"]
+__all__ = ["random64"]
 
 import ctypes
 import random
@@ -8,13 +8,13 @@ import sys
 from src.const import SHARED_FILE
 
 
-def _random64() -> float:
+def random64() -> float:
     """
-    The function `_random64` generates a random number using the shared library `random64`. If an
+    The function `random64` generates a random number using the shared library `random64`. If an
     exception occurs during the loading of the library, the function seeds the random number generator
     with the current time and generates a random number within a specified range.
 
-    @return The function `_random64` returns a floating-point number, either obtained from the shared
+    @return The function `random64` returns a floating-point number, either obtained from the shared
     library or generated locally using Python's built-in modules.
     """
     try:
@@ -39,14 +39,14 @@ def _random64() -> float:
 
 class __Var:
     extra_message: str = "Good looking!"
-    limit: float = _random64()
+    limit: float = random64()
 
     def reset_extra_message(self) -> None:
         self.extra_message = ""
 
     @staticmethod
     def get_random64() -> float:
-        return _random64()
+        return random64()
 
 
 var = __Var()

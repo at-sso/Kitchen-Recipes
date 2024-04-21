@@ -146,7 +146,7 @@ def __render_page() -> ShowsRender:
 
 
 def __generate_recipe_id(r: JSONType) -> str:
-    return str(len(r) + var.get_random64())
+    return str(len(r) + random64())
 
 
 def __modify_response(*val: Any) -> ShowsRender:

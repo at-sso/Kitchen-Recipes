@@ -22,6 +22,7 @@ py -m pip install -r ./env/requirements.txt
 2. Install the dependencies using the command mentioned above.
 3. Run the Flask application using the provided Python script.
 4. Access the web application in your browser.
+5. To align the paths in the systemd unit file with your project's structure and update the Gunicorn and Nginx configurations accordingly read [this](env/readme.md).
 
 ## Overview of the Code
 

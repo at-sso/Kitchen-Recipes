@@ -1,7 +1,7 @@
 from icecream import install
 from src import main
 from src.logger import logger
-from src import timer
+from src.timer import *
 
 
 if __name__ == "__main__":

@@ -24,3 +24,4 @@ bin/**
 !bin/src**
 !bin/tests**
 log/**
+kr-testsenv

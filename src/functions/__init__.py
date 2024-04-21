@@ -66,7 +66,7 @@ def accumulate(
     @return The function `accumulate` returns the accumulated value of `x`.
     """
     logger_specials.was_called(__name__, accumulate.__name__)
-    for i in range(start, end):  # type: ignore[misc]
+    for i in range(start, end):
         x += y
         if z != None:
             x += z
