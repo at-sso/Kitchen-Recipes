@@ -46,4 +46,4 @@ The web application uses JavaScript to dynamically update the `responseGetter` o
 
 ## License
 
-This project is licensed under the MIT License - see the [license](license) file for details.
+This project is licensed under the **[GPL-3.0 license](license)**.
